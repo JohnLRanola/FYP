@@ -24,5 +24,6 @@ router.register(r'prescriptions', views.PharmacyView, 'pharmacy')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls))
+    path('api/', include(router.urls)),
+    path('login/', views.login_view, name='login'),
 ]
