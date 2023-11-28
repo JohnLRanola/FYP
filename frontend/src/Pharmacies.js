@@ -61,7 +61,8 @@ class Pharmacies extends Component {
           <strong>Patient's Name:</strong> {item.name} <br/>
           <strong>Doctor's Name:</strong> {item.doctor} <br/>
           <strong>Prescription Date:</strong> {item.date} <br/>
-          <strong>Additional Notes:</strong> {item.notes}
+          <strong>Additional Notes:</strong> {item.notes} <br/>
+          <strong>Completed:</strong> {item.completed ? 'Yes' : 'No'}
         </span>
         <QRCode value={item.id} />
       </li>
@@ -101,11 +102,12 @@ class Pharmacies extends Component {
                     }`}
                     title={item.notes}
                   >
-                    <strong>ID:</strong> {item.id} <br/>
-                    <strong>Patient's Name:</strong> {item.name} <br/>
-                    <strong>Doctor's Name:</strong> {item.doctor} <br/>
-                    <strong>Prescription Date:</strong> {item.date} <br/>
-                    <strong>Additional Notes:</strong> {item.notes}
+                  <strong>ID:</strong> {item.id} <br/>
+                  <strong>Patient's Name:</strong> {item.name} <br/>
+                  <strong>Doctor's Name:</strong> {item.doctor} <br/>
+                  <strong>Prescription Date:</strong> {item.date} <br/>
+                  <strong>Additional Notes:</strong> {item.notes} <br/>
+                  <strong>Completed:</strong> {item.completed ? 'Yes' : 'No'}
                   </span>
                   <QRCode value={item.id} />
                 </li>

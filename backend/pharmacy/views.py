@@ -1,10 +1,9 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from .serializers import PharmacySerializer
-from .models import Prescription, UserProfile
+from .models import Prescription
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
-from django.contrib.auth.models import User
 
 # Create your views here.
 

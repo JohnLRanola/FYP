@@ -1,10 +1,9 @@
 import random
 import string
 import qrcode
-from io import StringIO
+from io import BytesIO  # import BytesIO instead of StringIO
 from django.core.files.base import ContentFile
 from django.db import models
-from django.contrib.auth.models import User
 
 def generate_id():
     while True:
@@ -33,8 +32,8 @@ class Prescription(models.Model):
 
         img = qr.make_image(fill_color="black", back_color="white")
 
-        # Save the image to a StringIO object
-        temp_handle = StringIO()
+        # Save the image to a BytesIO object
+        temp_handle = BytesIO()  # use BytesIO instead of StringIO
         img.save(temp_handle, format='PNG')
         temp_handle.seek(0)
 
@@ -42,10 +41,3 @@ class Prescription(models.Model):
         self.qr_code.save(f'{self.id}.png', ContentFile(temp_handle.read()), save=False)
 
         super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.name
-
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    role = models.CharField(max_length=10)
