@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from .serializers import PharmacySerializer
-from .models import Prescription
+from .models import Prescription, UserProfile
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -11,13 +12,11 @@ class PharmacyView(viewsets.ModelViewSet):
     serializer_class = PharmacySerializer
     queryset = Prescription.objects.all()
 
-def login_view(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return JsonResponse({'status': 'success'})
-        else:
-            return JsonResponse({'status': 'error', 'message': 'Invalid username or password'})
+def redeem_prescription(request, id):
+    try:
+        prescription = Prescription.objects.get(pk=id)
+        prescription.redeem()  # assuming you have a redeem method in your Prescription model
+        prescription.save()
+        return JsonResponse({'status': 'success'})
+    except Prescription.DoesNotExist:
+        return JsonResponse({'status': 'error', 'error': 'Prescription not found'})

@@ -4,4 +4,4 @@ from .models import Prescription
 class PharmacySerializer(serializers.ModelSerializer):
     class Meta:
         model = Prescription
-        fields = ('id', 'name', 'doctor', 'date', 'notes', 'completed')
+        fields = ('id', 'name', 'doctor', 'date', 'notes', 'completed', 'qr_code')

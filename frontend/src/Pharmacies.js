@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import QRCode from 'react-qr-code';
 import axios from "axios";
 
 class Pharmacies extends Component {
@@ -62,33 +63,57 @@ class Pharmacies extends Component {
           <strong>Prescription Date:</strong> {item.date} <br/>
           <strong>Additional Notes:</strong> {item.notes}
         </span>
+        <QRCode value={item.id} />
       </li>
     ));
   };
 
   render() {
     return (
-      <main className="container">
-        <h1 className="text-white text-uppercase text-center my-4">Pharmacy app</h1>
+      <div className="container">
+        <h1 className="text-center my-4">Pharmacy</h1>
         <div className="row">
-          <div className="col-md-6 col-sm-10 mx-auto p-0">
-            <div className="card p-3">
-              <div className="mb-4">
-                <input
-                  type="text"
-                  value={this.state.idToRedeem}
-                  onChange={this.handleIdChange}
-                  placeholder="Enter prescription ID to redeem"
-                />
-                <button onClick={this.handleRedeem}>Redeem</button>
-              </div>
-              <ul className="list-group list-group-flush border-top-0">
-                {this.renderItems()}
-              </ul>
-            </div>
+          <div className="col-md-6">
+            <h2>Redeem Prescription</h2>
+            <input
+              type="text"
+              className="form-control my-4"
+              placeholder="Enter Prescription ID"
+              value={this.state.idToRedeem}
+              onChange={this.handleIdChange}
+            />
+            <button
+              className="btn btn-primary"
+              onClick={this.handleRedeem}
+            >
+              Redeem
+            </button>
+            <h2 className="my-4">Redeemed Prescriptions</h2>
+            <ul className="list-group">
+              {this.state.redeemedPrescriptions.map((item) => (
+                <li
+                  key={item.id}
+                  className="list-group-item d-flex justify-content-between align-items-center"
+                >
+                  <span
+                    className={`prescription-title mr-2 ${
+                      item.completed ? "completed-prescription" : ""
+                    }`}
+                    title={item.notes}
+                  >
+                    <strong>ID:</strong> {item.id} <br/>
+                    <strong>Patient's Name:</strong> {item.name} <br/>
+                    <strong>Doctor's Name:</strong> {item.doctor} <br/>
+                    <strong>Prescription Date:</strong> {item.date} <br/>
+                    <strong>Additional Notes:</strong> {item.notes}
+                  </span>
+                  <QRCode value={item.id} />
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-      </main>
+      </div>
     );
   }
 }
