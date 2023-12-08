@@ -28,7 +28,7 @@ class Pharmacies extends Component {
       console.error("Error updating prescription status", error);
     }
   };
-
+  
   fetchRequestedPrescriptions = async () => {
     try {
       const response = await axios.get("/api/prescriptions/requested");
@@ -45,7 +45,7 @@ class Pharmacies extends Component {
 
   fetchPrescriptions = async () => {
     try {
-      const response = await axios.get("/api/prescriptions/");
+      const response = await axios.get("/api/prescriptions/requested");
       this.setState({ prescriptionList: response.data });
     } catch (error) {
       console.error("Error fetching prescriptions", error);
@@ -125,13 +125,13 @@ class Pharmacies extends Component {
 
   render() {
     return (
-      <div className="container">
-        <h1 className="text-center my-4">Pharmacy</h1>
-        <Tabs defaultActiveKey="redeem" id="uncontrolled-tab-example">
-          <Tab eventKey="redeem" title="Redeem Prescription">
-            <div className="row">
-              <div className="col-md-6">
-                <h2>Redeem Prescription</h2>
+      <div className="container py-5">
+        <h1 className="text-center mb-5">Pharmacy</h1>
+        <div className="row justify-content-center">
+          <div className="col-md-8">
+            <div className="card">
+              <div className="card-body">
+                <h2 className="card-title text-center">Redeem Prescription</h2>
                 <input
                   type="text"
                   className="form-control my-4"
@@ -139,29 +139,26 @@ class Pharmacies extends Component {
                   value={this.state.idToRedeem}
                   onChange={this.handleIdChange}
                 />
-                <button
-                  className="btn btn-primary"
-                  onClick={this.handleRedeem}
-                >
-                  Redeem
-                </button>
-                <h2 className="my-4">Redeemed Prescriptions</h2>
+                <div className="d-grid gap-2">
+                  <button
+                    className="btn btn-primary"
+                    onClick={this.handleRedeem}
+                  >
+                    Redeem
+                  </button>
+                </div>
+                <h2 className="card-title text-center mt-4">Redeemed Prescriptions</h2>
                 <ul className="list-group">
                   {this.renderItems()}
                 </ul>
               </div>
             </div>
-          </Tab>
-          <Tab eventKey="requested" title="Requested Prescriptions">
-            <h2 className="my-4">Requested Prescriptions</h2>
-            <ul className="list-group">
-              {this.renderRequestedItems()}
-            </ul>
-          </Tab>
-        </Tabs>
+          </div>
+        </div>
       </div>
     );
   }
 }
+
 
 export default Pharmacies;

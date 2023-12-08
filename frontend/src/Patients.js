@@ -3,13 +3,23 @@ import axios from "axios";
 import QRCode from 'react-qr-code';
 
 class Patients extends Component {
-  state = {
-    prescriptionList: [],
-    redeemedPrescriptions: [],
-    idToRedeem: "",
-    prescriptionToView: null,
-    showQRCode: false,
-  };
+    constructor(props) {
+        super(props);
+        this.state = {
+          prescriptionList: [],
+          redeemedPrescriptions: [],
+          idToRedeem: "",
+          prescriptionToView: null,
+          showQRCode: false,
+        };
+    
+        this.fetchPrescriptions = this.fetchPrescriptions.bind(this);
+        this.handleViewPrescription = this.handleViewPrescription.bind(this);
+        this.handleIdChange = this.handleIdChange.bind(this);
+        this.handleToggleQRCode = this.handleToggleQRCode.bind(this);
+        this.renderPrescription = this.renderPrescription.bind(this);
+        this.sendToRequestedPrescriptions = this.sendToRequestedPrescriptions.bind(this);
+      }
 
   componentDidMount() {
     this.fetchPrescriptions();
@@ -57,6 +67,17 @@ class Patients extends Component {
     );
   };
 
+  sendToRequestedPrescriptions = async (prescription) => {
+    try {
+      const response = await axios.post('/api/prescriptions/requested', prescription);
+      this.setState(prevState => ({
+        requestedPrescriptions: [...prevState.requestedPrescriptions, response.data]
+      }));
+    } catch (error) {
+      console.error("Error posting requested prescription", error);
+    }
+  };
+
   renderQRCode = () => {
     const { prescriptionToView, showQRCode } = this.state;
     if (!showQRCode || !prescriptionToView) return null;
@@ -65,33 +86,37 @@ class Patients extends Component {
 
   render() {
     return (
-      <div className="container">
-        <h1 className="text-center my-4">Pharmacy</h1>
-        <div className="row">
-          <div className="col-md-6">
-            <h2>View Prescription</h2>
-            <input
-              type="text"
-              className="form-control my-4"
-              placeholder="Enter Prescription ID"
-              value={this.state.idToRedeem}
-              onChange={this.handleIdChange}
-            />
-            <button
-              className="btn btn-primary"
-              onClick={this.handleViewPrescription}
-            >
-              View
-            </button>
-            <button
-              className="btn btn-primary"
-              onClick={this.handleToggleQRCode}
-            >
-              Toggle QR Code
-            </button>
-            <h2 className="my-4">Prescription Details</h2>
-            {this.renderPrescription()}
-            {this.renderQRCode()}
+      <div className="container py-5">
+        <h1 className="text-center mb-5">Patient</h1>
+        <div className="row justify-content-center">
+          <div className="col-md-8">
+            <div className="card">
+              <div className="card-body">
+                <h2 className="card-title">View Prescription</h2>
+                <input
+                  type="text"
+                  className="form-control my-4"
+                  placeholder="Enter Prescription ID"
+                  value={this.state.idToRedeem}
+                  onChange={this.handleIdChange}
+                />
+                <button
+                  className="btn btn-primary btn-block my-2"
+                  onClick={this.handleViewPrescription}
+                >
+                  View
+                </button>
+                <button
+                  className="btn btn-secondary btn-block my-2"
+                  onClick={this.handleToggleQRCode}
+                >
+                  Toggle QR Code
+                </button>
+                <h2 className="card-title mt-4">Prescription Details</h2>
+                {this.renderPrescription()}
+                {this.renderQRCode()}
+              </div>
+            </div>
           </div>
         </div>
       </div>

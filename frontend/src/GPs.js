@@ -150,9 +150,6 @@ class GPs extends Component {
             </div>
           </div>
           <div>
-            <Link to="/gps">GPs</Link>
-            <Link to="/pharmacies">Pharmacies</Link>
-            <Link to="/patients">Patients</Link>
           </div>
           {this.state.modal ? (
             <Modal

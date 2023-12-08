@@ -1,7 +1,7 @@
 import random
 import string
 import qrcode
-from io import BytesIO  # import BytesIO instead of StringIO
+from io import BytesIO  
 from django.core.files.base import ContentFile
 from django.db import models
 
@@ -32,12 +32,11 @@ class Prescription(models.Model):
 
         img = qr.make_image(fill_color="black", back_color="white")
 
-        # Save the image to a BytesIO object
-        temp_handle = BytesIO()  # use BytesIO instead of StringIO
+        temp_handle = BytesIO() 
         img.save(temp_handle, format='PNG')
         temp_handle.seek(0)
 
-        # Save image to qr_code field
         self.qr_code.save(f'{self.id}.png', ContentFile(temp_handle.read()), save=False)
 
         super().save(*args, **kwargs)
+        
